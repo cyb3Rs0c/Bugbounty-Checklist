@@ -1,0 +1,37 @@
+name: Sync Upstream
+
+env:
+  # Auth
+  WORKFLOW_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  # Settings
+  UPSTREAM_URL: "https://github.com/0xmaximus/Galaxy-Bugbounty-Checklist.git"
+  UPSTREAM_BRANCH: "main"
+  DOWNSTREAM_BRANCH: "main"
+  FETCH_ARGS: ""
+  MERGE_ARGS: ""
+  PUSH_ARGS: ""
+  SPAWN_LOGS: "false"
+
+on:
+  # Run Everyday 00:00
+  schedule:
+    - cron: '0 0 * * *'
+  # Run Manually
+  workflow_dispatch:
+
+jobs:
+  syncing-downstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Syncing Downstream to Upstream Repository
+        uses: dabreadman/sync-upstream-repo@v1.3.0
+        with: 
+          upstream_repo: ${{ env.UPSTREAM_URL }}
+          upstream_branch: ${{ env.UPSTREAM_BRANCH }}
+          downstream_branch: ${{ env.DOWNSTREAM_BRANCH }}
+          token: ${{ env.WORKFLOW_TOKEN }}
+          fetch_args: ${{ env.FETCH_ARGS }}
+          merge_args: ${{ env.MERGE_ARGS }}
+          push_args: ${{ env.PUSH_ARGS }}
+          spawn_logs: ${{ env.SPAWN_LOGS }}
